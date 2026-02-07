@@ -3,100 +3,145 @@
 <head>
   <meta charset="UTF-8" />
   <title>Will you be my Valentine?</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: radial-gradient(circle at top, #ff9a9e, #ff6a88 40%, #c850c0 80%);
       color: #fff;
       text-align: center;
-      overflow: hidden;
+      position: relative;
+      transition: transform 0.05s ease;
+      padding-bottom: env(safe-area-inset-bottom);
     }
+    
+    body.shake {
+      animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+      20%, 40%, 60%, 80% { transform: translateX(10px); }
+    }
+
+    .main-content {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      gap: 20px;
+    }
+
     .container {
       max-width: 420px;
-      padding: 20px 18px 26px;
+      width: 100%;
+      padding: 24px 20px 32px;
       background: rgba(0,0,0,0.25);
-      border-radius: 20px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
       backdrop-filter: blur(12px);
-      position: relative;
+      flex-shrink: 0;
     }
+    
     .photo-wrapper {
       width: 180px;
       height: 180px;
       border-radius: 50%;
       overflow: hidden;
-      margin: 0 auto 14px;
+      margin: 0 auto 16px;
       border: 4px solid rgba(255,255,255,0.9);
-      box-shadow: 0 0 25px rgba(255,255,255,0.6);
+      box-shadow: 0 0 30px rgba(255,255,255,0.6);
     }
+    
     .photo-wrapper img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+    
     h1 {
-      font-size: 1.6rem;
-      margin-bottom: 6px;
+      font-size: clamp(1.4rem, 4vw, 1.8rem);
+      margin-bottom: 8px;
+      line-height: 1.2;
     }
+    
     .name {
       font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
+      font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+      margin-bottom: 12px;
     }
+    
     p.question {
-      font-size: 1rem;
-      margin-bottom: 16px;
+      font-size: clamp(0.95rem, 3vw, 1.05rem);
+      margin-bottom: 20px;
+      line-height: 1.4;
     }
-
+    
     .buttons {
       display: flex;
       justify-content: center;
-      gap: 12px;
-      margin-bottom: 12px;
-      position: relative;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
     }
+    
     button {
       border: none;
-      padding: 10px 20px;
-      border-radius: 999px;
-      font-size: 0.95rem;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: clamp(0.95rem, 3vw, 1rem);
+      font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      transition: all 0.2s ease;
+      min-width: 110px;
+      touch-action: manipulation;
     }
+    
     #btnYes {
       background: linear-gradient(135deg, #ffecd2, #fcb69f);
       color: #b31237;
-      font-weight: 700;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-      transform: scale(1);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
       position: relative;
-      z-index: 2; /* keep Yes above No */
+      z-index: 2;
     }
-    #btnYes:hover {
-      transform: scale(1.05);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
-    }
+    
+    #btnYes:active { transform: scale(0.98); }
+    
     #btnNo {
-      background: rgba(255,255,255,0.85);
+      background: rgba(255,255,255,0.9);
       color: #ff2e63;
-      font-weight: 600;
-      transform: scale(1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       position: relative;
       z-index: 1;
     }
-
+    
     .hint {
-      font-size: 0.8rem;
+      font-size: clamp(0.75rem, 2.5vw, 0.85rem);
       opacity: 0.9;
+      padding: 0 10px;
     }
+    
     .hidden { display: none; }
-
+    
     .hearts {
       position: fixed;
       inset: 0;
@@ -104,132 +149,207 @@
       overflow: hidden;
       z-index: -1;
     }
+    
     .heart {
       position: absolute;
       color: rgba(255,255,255,0.9);
-      font-size: 18px;
+      font-size: clamp(14px, 4vw, 20px);
       animation: floatUp linear infinite;
     }
+    
     @keyframes floatUp {
-      0% { transform: translateY(100vh); opacity: 0; }
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
       10% { opacity: 1; }
-      100% { transform: translateY(-10vh); opacity: 0; }
+      100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+    }
+    
+    .celebrate {
+      font-size: clamp(1.4rem, 4.5vw, 1.7rem);
+      margin: 12px 0 10px;
     }
 
-    .celebrate {
-      font-size: 1.5rem;
-      margin-top: 10px;
-      margin-bottom: 8px;
-    }
+    /* GALLERY - ALL IMAGES VISIBLE (NO SLIDER) */
     .gallery {
       display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      overflow-x: auto;
-      padding-bottom: 4px;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+      padding: 0 8px;
     }
+    
     .gallery img {
-      width: 90px;
-      height: 120px;
+      width: calc(50% - 6px); /* 2 per row on mobile */
+      max-width: 120px;
+      height: 160px;
       object-fit: cover;
-      border-radius: 12px;
-      border: 2px solid rgba(255,255,255,0.8);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+      border-radius: 16px;
+      border: 3px solid rgba(255,255,255,0.9);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      flex-shrink: 0;
     }
 
-    @media (max-width: 480px) {
-      .container { width: 94%; padding: 18px 14px 22px; }
-      h1 { font-size: 1.4rem; }
+    /* Larger screens: 4 per row */
+    @media (min-width: 768px) {
+      .gallery img {
+        width: calc(25% - 9px); /* 4 per row */
+        max-width: 140px;
+        height: 180px;
+      }
+    }
+
+    /* COUNTDOWN */
+    .countdown {
+      position: fixed;
+      bottom: max(20px, env(safe-area-inset-bottom));
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(16px);
+      padding: 14px 28px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.4);
+      font-size: clamp(0.8rem, 2.8vw, 0.9rem);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+      z-index: 100;
+      text-align: center;
+      min-width: 200px;
+    }
+    
+    .countdown-label {
+      font-weight: 600;
+      margin-bottom: 4px;
+      opacity: 0.95;
+    }
+    
+    .countdown-time {
+      font-size: clamp(0.95rem, 3.2vw, 1.1rem);
+      font-weight: 700;
+      font-family: monospace;
+    }
+
+    @media (max-height: 500px) and (orientation: landscape) {
+      .main-content { padding: 10px; gap: 10px; }
+      .container { padding: 20px 16px; max-width: 95vw; }
+      .countdown { bottom: 10px; padding: 10px 20px; font-size: 0.8rem; }
     }
   </style>
 </head>
 <body>
   <div class="hearts" id="hearts"></div>
 
-  <div class="container" id="question-card">
-    <div class="photo-wrapper">
-      <!-- Replace with your own main photo -->
-      <img src="img/us1.jpg" alt="Us">
+  <div class="main-content">
+    <div class="countdown">
+      <div class="countdown-label">Until Valentine's Day 💕</div>
+      <div class="countdown-time" id="countdown-display">Loading...</div>
     </div>
-    <div class="name">Hey, Rina 💘</div>
-    <h1>Will you be my Valentine?</h1>
-    <p class="question">
-      I could send a normal message… but I made a whole website just for you. 🥹
-    </p>
-    <div class="buttons">
-      <button id="btnYes">Yes 💖</button>
-      <button id="btnNo">No 😈</button>
+
+    <div class="container" id="question-card">
+      <div class="photo-wrapper">
+        <img src="img/us1.jpg" alt="Us">
+      </div>
+      <div class="name">Hey, Rina 💘</div>
+      <h1>Will you be my Valentine?</h1>
+      <p class="question">
+        Anyone can send a message... but you deserve something special just like you 💖
+      </p>
+      <div class="buttons">
+        <button id="btnYes">Yes 💖</button>
+        <button id="btnNo">No 😈</button>
+      </div>
+      <div class="hint">(Warning ⚠️: Saying "Yes" may cause extreme happiness 🙈)</div>
     </div>
-    <div class="hint">(Warning ⚠️: Saying “Yes” may cause extreme happiness 🙈)</div>
+
+    <div class="container hidden" id="yes-card">
+      <div class="photo-wrapper">
+        <img src="img/us2.gif" alt="Happy us">
+      </div>
+      <div class="celebrate">WOOOOOO!!! I love you pookie!! 💞</div>
+      <p class="question">
+        Get ready, I have plans for us. 😘💃🕺🥳❤️💐
+      </p>
+      <div class="gallery">
+        <img src="img/us3.jpg" alt="Memory 1">
+        <img src="img/us4.jpg" alt="Memory 2">
+        <img src="img/us5.jpg" alt="Memory 3">
+        <img src="img/us6.jpg" alt="Memory 4">
+      </div>
+    </div>
   </div>
 
-  <div class="container hidden" id="yes-card">
-    <div class="photo-wrapper">
-      <!-- Another photo for the “Yes” screen -->
-      <img src="img/us2.gif" alt="Happy us">
-    </div>
-    <h1 class="celebrate">WOOOOOO!!! I love you pookie!! 💞</h1>
-    <p class="question">
-      Get ready, I have plans for us. 😘💃🕺🥳❤️💐
-    </p>
-    <div class="gallery">
-      <!-- Add more of your own photos here -->
-      <img src="img/us3.jpg" alt="Memory 1">
-      <img src="img/us4.jpg" alt="Memory 2">
-      <img src="img/us5.jpg" alt="Memory 3">
-      <img src="img/us6.jpg" alt="Memory 4">
-    </div>
-  </div>
+  <!-- Added Confetti Script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <script>
+    function vibrateAndShake() {
+      if ('vibrate' in navigator) {
+        navigator.vibrate([100, 50, 100]);
+      }
+      document.body.classList.add('shake');
+      setTimeout(() => document.body.classList.remove('shake'), 500);
+    }
+
+    const valentineDate = new Date('2026-02-14T00:00:00').getTime();
+    const countdownElement = document.getElementById('countdown-display');
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = valentineDate - now;
+      if (distance < 0) {
+        countdownElement.innerHTML = "Happy Valentine's Day! 💖";
+        return;
+      }
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
     const btnYes = document.getElementById("btnYes");
     const btnNo = document.getElementById("btnNo");
     const questionCard = document.getElementById("question-card");
     const yesCard = document.getElementById("yes-card");
     const heartsContainer = document.getElementById("hearts");
 
-    let yesScale = 1;
-    let noScale = 1;
-
-    // Texts that the No button will cycle through
+    let yesScale = 1, noScale = 1;
     const noTexts = [
-      "No 😈",
-      "Are you sure? 🥺",
-      "Really sure? 😳",
-      "فكري 👀💘",
-      "فكرتي يعني 😤",
-      "طب ما تفكري تاني 😂",
-      "الوووووو 😡"
+      "No 😈", "Are you sure? 🥺", "Really sure? 😳",
+      "فكري 👀💘", "فكرتي يعني 😤", "طب ما تفكري تاني 😂", "الوووووو 😡"
     ];
     let noIndex = 0;
 
     function applyScales() {
-      // Limit how big/small they can get so layout stays okay
       if (yesScale > 2.3) yesScale = 2.3;
       if (noScale < 0.3) noScale = 0.3;
-
       btnYes.style.transform = `scale(${yesScale})`;
       btnNo.style.transform = `scale(${noScale})`;
     }
 
     btnNo.addEventListener("click", (e) => {
       e.preventDefault();
-
-      // Change No button text
+      vibrateAndShake();
       noIndex = (noIndex + 1) % noTexts.length;
       btnNo.textContent = noTexts[noIndex];
-
-      // Make Yes bigger and No smaller
       yesScale += 0.2;
       noScale -= 0.1;
-
       applyScales();
     });
 
+    // UPDATED YES BUTTON LISTENER
     btnYes.addEventListener("click", () => {
       questionCard.classList.add("hidden");
       yesCard.classList.remove("hidden");
       startHeartRain();
+      
+      // Trigger Confetti Celebration [web:1][web:16]
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
     });
 
     function startHeartRain() {
@@ -239,7 +359,7 @@
         span.className = "heart";
         span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         span.style.left = Math.random() * 100 + "vw";
-        span.style.animationDuration = 4 + Math.random() * 4 + "s";
+        span.style.animationDuration = (4 + Math.random() * 4) + "s";
         span.style.animationDelay = Math.random() * 2 + "s";
         heartsContainer.appendChild(span);
       }
