@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <title>Will you be my Valentine?</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  
+  <!-- Bubble Love Font for Headlines -->
+  <link href="https://fonts.cdnfonts.com/css/bubble-love" rel="stylesheet">
+  
+  <!-- Lonely Study Font for Notes -->
+  <link href="https://fonts.cdnfonts.com/css/lonely-study" rel="stylesheet">
+  
   <style>
     * { 
       box-sizing: border-box; 
@@ -26,6 +33,18 @@
       position: relative;
       transition: transform 0.05s ease;
       padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    /* Bubble Love for headlines */
+    .bubble-love {
+      font-family: 'Bubble Love', cursive, sans-serif;
+      font-weight: normal;
+    }
+    
+    /* Lonely Study for notes/messages */
+    .lonely-study {
+      font-family: 'Lonely Study', cursive, sans-serif;
+      font-weight: normal;
     }
     
     body.shake {
@@ -85,7 +104,6 @@
     }
     
     .name {
-      font-weight: 700;
       font-size: clamp(1.1rem, 3.5vw, 1.3rem);
       margin-bottom: 12px;
     }
@@ -248,24 +266,24 @@
       <div class="photo-wrapper">
         <img src="img/us1.jpg" alt="Us">
       </div>
-      <div class="name">Hey, Rina 💘</div>
-      <h1>Will you be my Valentine?</h1>
-      <p class="question">
+      <div class="name bubble-love">Hey, Rina 💘</div>
+      <h1 class="bubble-love">Will you be my Valentine?</h1>
+      <p class="question lonely-study">
         Anyone can send a message... but you deserve something special just like you 💖
       </p>
       <div class="buttons">
         <button id="btnYes">Yes 💖</button>
         <button id="btnNo">No 😈</button>
       </div>
-      <div class="hint">(Warning ⚠️: Saying "Yes" may cause extreme happiness 🙈)</div>
+      <div class="hint lonely-study">(Warning ⚠️: Saying "Yes" may cause extreme happiness 🙈)</div>
     </div>
 
     <div class="container hidden" id="yes-card">
       <div class="photo-wrapper">
         <img src="img/us2.gif" alt="Happy us">
       </div>
-      <div class="celebrate">WOOOOOO!!! I love you pookie!! 💞</div>
-      <p class="question">
+      <div class="celebrate bubble-love">WOOOOOO!!! I love you pookie!! 💞</div>
+      <p class="question lonely-study">
         Get ready, I have plans for us. 😘💃🕺🥳❤️💐
       </p>
       <div class="gallery">
@@ -277,7 +295,7 @@
     </div>
   </div>
 
-  <!-- Added Confetti Script -->
+  <!-- Confetti Script -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <script>
@@ -338,18 +356,19 @@
       applyScales();
     });
 
-    // UPDATED YES BUTTON LISTENER
     btnYes.addEventListener("click", () => {
       questionCard.classList.add("hidden");
       yesCard.classList.remove("hidden");
       startHeartRain();
       
-      // Trigger Confetti Celebration [web:1][web:16]
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
+      // Confetti burst
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
     });
 
     function startHeartRain() {
