@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Will you be my Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ff9a9e, #ff6a88 40%, #c850c0 80%);
+      color: #fff;
+      text-align: center;
+      overflow: hidden;
+    }
+    .container {
+      max-width: 420px;
+      padding: 20px 18px 26px;
+      background: rgba(0,0,0,0.25);
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+      position: relative;
+    }
+    .photo-wrapper {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 14px;
+      border: 4px solid rgba(255,255,255,0.9);
+      box-shadow: 0 0 25px rgba(255,255,255,0.6);
+    }
+    .photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin-bottom: 6px;
+    }
+    .name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+    p.question {
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    button {
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    #btnYes {
+      background: linear-gradient(135deg, #ffecd2, #fcb69f);
+      color: #b31237;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transform: scale(1);
+      position: relative;
+      z-index: 2; /* keep Yes above No */
+    }
+    #btnYes:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.35);
+    }
+    #btnNo {
+      background: rgba(255,255,255,0.85);
+      color: #ff2e63;
+      font-weight: 600;
+      transform: scale(1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+    .hidden { display: none; }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: -1;
+    }
+    .heart {
+      position: absolute;
+      color: rgba(255,255,255,0.9);
+      font-size: 18px;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-10vh); opacity: 0; }
+    }
+
+    .celebrate {
+      font-size: 1.5rem;
+      margin-top: 10px;
+      margin-bottom: 8px;
+    }
+    .gallery {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .gallery img {
+      width: 90px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.8);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+
+    @media (max-width: 480px) {
+      .container { width: 94%; padding: 18px 14px 22px; }
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <div class="container" id="question-card">
+    <div class="photo-wrapper">
+      <!-- Replace with your own main photo -->
+      <img src="img/us1.jpg" alt="Us">
+    </div>
+    <div class="name">Hey, Rina 💘</div>
+    <h1>Will you be my Valentine?</h1>
+    <p class="question">
+      I could send a normal message… but I made a whole website just for you. 🥹
+    </p>
+    <div class="buttons">
+      <button id="btnYes">Yes 💖</button>
+      <button id="btnNo">No 😈</button>
+    </div>
+    <div class="hint">(psst… I think there is only one correct button 🙈)</div>
+  </div>
+
+  <div class="container hidden" id="yes-card">
+    <div class="photo-wrapper">
+      <!-- Another photo for the “Yes” screen -->
+      <img src="img/us2.jpg" alt="Happy us">
+    </div>
+    <h1 class="celebrate">I KNEW YOU’D SAY YES! 💞</h1>
+    <p class="question">
+      You just made my whole Valentine’s Day. Get ready, I have plans for us. 💐
+    </p>
+    <div class="gallery">
+      <!-- Add more of your own photos here -->
+      <img src="img/us3.jpg" alt="Memory 1">
+      <img src="img/us4.jpg" alt="Memory 2">
+      <img src="img/us5.jpg" alt="Memory 3">
+      <img src="img/us6.jpg" alt="Memory 4">
+    </div>
+  </div>
+
+  <script>
+    const btnYes = document.getElementById("btnYes");
+    const btnNo = document.getElementById("btnNo");
+    const questionCard = document.getElementById("question-card");
+    const yesCard = document.getElementById("yes-card");
+    const heartsContainer = document.getElementById("hearts");
+
+    let yesScale = 1;
+    let noScale = 1;
+
+    // Texts that the No button will cycle through
+    const noTexts = [
+      "No 😈",
+      "Are you sure? 🥺",
+      "Really sure? 😳",
+      "Think again 💘",
+      "Last chance 😤",
+      "You can’t escape 😏",
+      "Just press YES already 😡"
+    ];
+    let noIndex = 0;
+
+    function applyScales() {
+      // Limit how big/small they can get so layout stays okay
+      if (yesScale > 2.3) yesScale = 2.3;
+      if (noScale < 0.3) noScale = 0.3;
+
+      btnYes.style.transform = `scale(${yesScale})`;
+      btnNo.style.transform = `scale(${noScale})`;
+    }
+
+    btnNo.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // Change No button text
+      noIndex = (noIndex + 1) % noTexts.length;
+      btnNo.textContent = noTexts[noIndex];
+
+      // Make Yes bigger and No smaller
+      yesScale += 0.2;
+      noScale -= 0.1;
+
+      applyScales();
+    });
+
+    btnYes.addEventListener("click", () => {
+      questionCard.classList.add("hidden");
+      yesCard.classList.remove("hidden");
+      startHeartRain();
+    });
+
+    function startHeartRain() {
+      const emojis = ["❤️","💖","💘","💕","💞","💓","💗"];
+      for (let i = 0; i < 40; i++) {
+        const span = document.createElement("span");
+        span.className = "heart";
+        span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.animationDuration = 4 + Math.random() * 4 + "s";
+        span.style.animationDelay = Math.random() * 2 + "s";
+        heartsContainer.appendChild(span);
+      }
+    }
+  </script>
+</body>
+</html>
